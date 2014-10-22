@@ -1,0 +1,16 @@
+{
+  "name": "PolymerMessenger",
+  "description": "",
+  "homepage": "",
+  "keywords": [
+  ],
+  "author": "",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "paper-elements": "Polymer/paper-elements#master",
+    "core-scaffold": "Polymer/core-scaffold#master",
+    "core-animated-pages": "Polymer/core-animated-pages#master",
+    "core-list": "Polymer/core-list#master"
+  }
+}

@@ -1,0 +1,21 @@
+.drawer-header {
+  background-color: #F4C7C3;
+}
+
+core-scaffold::shadow core-toolbar {
+  background-color: #C53929;
+}
+
+.content-header {
+  background-color: transparent;
+}
+
+#main-content {
+  padding: 5px 20px;
+}
+
+@media (max-width: 500px) {
+  .content-header {
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,55 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/core-icons/core-icons.html">
+<link rel="import" href="bower_components/core-list/core-list.html">
+<link rel="import" href="bower_components/core-item/core-item.html">
+<link rel="import" href="bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="message-overlay.html">
+
+<!--
+##### Example
+
+    <messages-view></messages-view>
+
+@element messages-view
+@blurb Element providing solution to [...].
+@status [...]
+-->
+
+<polymer-element name="messages-view" attributes="data" label="Messages">
+  <template>
+    <link rel="stylesheet" href="messages-view.css">
+
+    <message-overlay id="messageOverlay"></message-overlay>
+    <section layout vertical center-center>
+      <core-list data="{{data.threads}}" class="message-list" on-core-activate="{{messageTapped}}">
+        <template>
+          <core-item layout horizontal>
+            <div class="avatar">{{model.from[0]}}</div>
+            <div layout vertical flex>
+              <div class="sender-name">{{model.from}}</div>
+              <div class="message-preview">{{model.messages[model.messages.length - 1].message}}</div>
+            </div>
+            <paper-ripple fit></paper-ripple>
+
+          </core-item>
+        </template>
+        <paper-shadow z="1"></paper-shadow>
+      </core-list>
+    </section>
+  </template>
+
+  <script>
+    Polymer('messages-view', {
+
+      ready: function() {
+      },
+
+      messageTapped: function(event) {
+        this.$.messageOverlay.thread = event.detail.data;
+        this.$.messageOverlay.open();
+      },
+
+    });
+  </script>
+</polymer-element>

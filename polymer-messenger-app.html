@@ -1,0 +1,83 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="bower_components/core-icons/core-icons.html">
+<link rel="import" href="bower_components/core-scaffold/core-scaffold.html">
+<link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="bower_components/core-menu/core-menu.html">
+<link rel="import" href="bower_components/core-item/core-item.html">
+<link rel="import" href="messages-view.html">
+
+<!--
+##### Example
+
+    <polymer-messenger-app></polymer-messenger-app>
+
+@element polymer-messenger-app
+@blurb Element providing solution to [...].
+@status [...]
+-->
+
+<polymer-element name="polymer-messenger-app" attributes="data">
+  <template>
+    <link rel="stylesheet" href="polymer-messenger-app.css">
+
+    <core-scaffold>
+      <core-header-panel navigation flex mode="seamed">
+        <core-toolbar class="drawer-header">WUSTL Messenger</core-toolbar>
+        <core-menu id="menu" valueAttr="label" theme="core-light-theme" selected="{{activeView}}">
+          <core-item icon="mail" label="Messages"><paper-ripple fit></paper-ripple></core-item>
+          <core-item icon="settings" label="Settings"><paper-ripple fit></paper-ripple></core-item>
+        </core-menu>
+      </core-header-panel>
+      <core-toolbar class="content-header" tool flex> <!-- flex makes the bar span across the top -->
+        <div flex>{{$.menu.selected}}</div> <!-- flex justifies the icons to the right-side -->
+        <core-icon-button icon="refresh"></core-icon-button>
+        <core-icon-button icon="add"></core-icon-button>
+      </core-toolbar>
+      <div layout horizontal center-center fit>
+        <core-animated-pages  valueAttr="label" selected="{{activeView}}" fit transitions="cross-fade-all">
+          <messages-view data="{{data}}"></messages-view>
+          <section layout vertical center-center label="Settings">
+            <div>Settings</div>
+          </section>
+        </core-animated-pages>
+      </div>
+    </core-scaffold>
+  </template>
+
+  <script>
+    Polymer('polymer-messenger-app', {
+      /**
+       * The `attr` attribute does not yet have a purpose.
+       *
+       * @attribute attr
+       * @type string
+       */
+      activeView: 'Messages',
+
+      ready: function() {
+        this.data = {threads: [
+          {from: 'Parker', messages: [
+            {from: 'Parker', message: "Hey dude", timestamp:"1413741219"},
+            {from: 'Me', message: "Yo what's going on", timestamp:"1413741119"},
+            {from: 'Parker', message: "The Giants are losing by 100 runs.", timestamp:"1413741019"},
+            {from: 'Me', message: "I'll be right there", timestamp:"1413740719"}
+          ]},
+          {from: 'Todd Sproull', messages: [
+            {from: 'Todd Sproull', message: "Jeremy, you're so cool!", timestamp:"1413741219"}
+          ]},
+          {from: 'Leah', messages: [
+            {from: 'Me', message: "Just Landed", timestamp:"1413740719"},
+            {from: 'Leah', message: "See you soon.", timestamp:"1413740219"},
+          ]},
+          {from: 'Di', messages: [
+            {from: 'Di', message: "Where are you guys?", timestamp:"1413731219"},
+            {from: 'Me', message: "I'll be right there", timestamp:"1413740719"},
+          ]}
+        ]}
+      },
+
+    });
+  </script>
+</polymer-element>

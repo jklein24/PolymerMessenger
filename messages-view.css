@@ -1,0 +1,41 @@
+.message-list {
+  height: 100%;
+  width: 85%;
+  background-color: whitesmoke;
+  transition: width ease-in-out;
+}
+
+@media (max-width: 800px) {
+  .message-list {
+    width: 100%;
+  }
+}
+
+.message-list core-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);;
+  padding: 15px;
+}
+
+.avatar {
+  color: white;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  height: 50px;
+  width: 50px;
+  margin-right: 20px;
+  border-radius: 50%;
+  background-color: red;
+}
+
+.sender-name {
+  font-weight: bold;
+}
+
+.message-preview {
+  color: rgba(0, 0, 0, 0.54);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
