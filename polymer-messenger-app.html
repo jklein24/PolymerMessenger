@@ -39,10 +39,10 @@
       <core-toolbar class="content-header" tool flex> <!-- flex makes the bar span across the top -->
         <div flex>{{$.menu.selected}}</div> <!-- flex justifies the icons to the right-side -->
         <core-icon-button icon="refresh"></core-icon-button>
-        <core-icon-button icon="add" on-click="{{addTapped}}"></core-icon-button>
+        <core-icon-button icon="add" on-tap="{{addTapped}}"></core-icon-button>
       </core-toolbar>
       <div layout horizontal center-center fit>
-        <core-animated-pages  id="pages" valueAttr="label" selected="{{activeView}}" fit transitions="slide-from-right cross-fade-all">
+        <core-animated-pages  id="pages" valueAttr="label" selected="{{activeView}}" fit transitions="slide-from-right">
           <messages-view data="{{data}}"></messages-view>
           <contacts-view data="{{data}}"></contacts-view>
           <section layout vertical center-center label="Settings">
