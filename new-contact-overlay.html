@@ -5,7 +5,6 @@
 <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="bower_components/paper-input/paper-input.html">
 <link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
-<link rel="import" href="message-thread.html">
 
 <!--
 ##### Example
@@ -17,30 +16,32 @@
 @status [...]
 -->
 
-<polymer-element name="message-overlay" attributes="thread">
+<polymer-element name="new-contact-overlay" attributes="contacts">
   <template>
     <!--<link rel="stylesheet" href="messages-view.css">-->
     <style>
-      paper-button {
+      paper-button[affirmative] {
         color: #4285f4;
       }
 
       paper-icon-button {
         align-self: center;
       }
+
+      #nameInput {
+        width: 100%;
+      }
     </style>
-    <paper-dialog id="overlay" heading="Message from {{thread.from}}" backdrop transition="paper-dialog-transition-bottom">
-      <message-thread thread="{{thread}}"></message-thread>
-      <div layout horizontal>
-        <paper-input id="messageInput" flex label="Send new message"></paper-input>
-        <paper-icon-button icon="send" on-click="{{sendMessage}}"></paper-icon-button>
-      </div>
-      <paper-button affirmative core-overlay-toggle>CLOSE</paper-button>
+    <paper-dialog id="overlay" heading="Add Contact" backdrop
+        transition="paper-dialog-transition-bottom" on-core-overlay-close-completed="{{reset}}">
+      <paper-input flex required id="nameInput" flex label="Name"></paper-input>
+      <paper-button affirmative on-click="{{save}}" core-overlay-toggle>SAVE</paper-button>
+      <paper-button dismissive core-overlay-toggle>CANCEL</paper-button>
     </paper-dialog>
   </template>
 
   <script>
-    Polymer('message-overlay', {
+    Polymer('new-contact-overlay', {
 
       ready: function() {
       },
@@ -49,17 +50,13 @@
         this.$.overlay.toggle();
       },
 
-      sendMessage: function() {
-        if (this.$.messageInput.value == '') {
-          return
+      save: function() {
+        if (this.$.nameInput.value == '') {
+          return;
         }
-        var newMessage = {from: "Me", message: this.$.messageInput.value}
-        this.thread.messages.push(newMessage);
-        this.$.messageInput.value = '';
-        this.async(function() {
-          var messageEls = this.querySelectorAll("::shadow .message");
-          messageEls[messageEls.length - 1].scrollIntoViewIfNeeded();
-        });
+
+        this.contacts.push({name: this.$.nameInput.value})
+        this.$.nameInput.value = '';
       }
     });
   </script>

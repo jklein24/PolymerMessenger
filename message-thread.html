@@ -1,0 +1,43 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<!--
+##### Example
+
+    <message-thread></message-thread>
+
+@element message-thread
+@blurb Element providing solution to [...].
+@status [...]
+-->
+
+<polymer-element name="message-thread" attributes="thread" noscript>
+  <template>
+    <style>
+      .message-container {
+        margin: 50px 0;
+        height: 210px;
+        overflow: auto;
+      }
+
+      .message[fromSelf] {
+        color: white;
+        background-color: #4285f4;
+        align-self: flex-end;
+      }
+
+      .message {
+        background-color: rgba(0, 0, 0, .1);
+        margin-top: 10px;
+        border-radius: 5px;
+        padding: 7px;
+        min-height: 17px;
+        align-self: flex-start;
+      }
+    </style>
+    <div class="message-container" layout vertical hidden?="{{thread === undefined}}">
+      <template repeat="{{message in thread.messages}}">
+        <div class="message" fromSelf?="{{message.from == 'Me'}}">{{message.message}}</div>
+      </template>
+    </div>
+  </template>
+</polymer-element>

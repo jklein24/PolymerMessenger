@@ -1,0 +1,66 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/core-icons/core-icons.html">
+<link rel="import" href="bower_components/core-list/core-list.html">
+<link rel="import" href="bower_components/core-item/core-item.html">
+<link rel="import" href="bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="message-overlay.html">
+
+<!--
+##### Example
+
+    <contacts-view></contacts-view>
+
+@element contacts-view
+@blurb Element providing solution to [...].
+@status [...]
+-->
+
+<polymer-element name="contacts-view" attributes="data" label="Contacts">
+  <template>
+    <link rel="stylesheet" href="contacts-view.css">
+
+    <message-overlay id="messageOverlay"></message-overlay>
+    <section layout vertical center-center>
+      <paper-shadow id="listContainer" z="1">
+        <core-list data="{{data.contacts}}" class="contact-list" height="81" slide-from-right>
+          <template>
+            <core-item layout horizontal center>
+              <div class="avatar">{{model.name[0]}}</div>
+              <div flex class="contact-name">{{model.name}}</div>
+              <paper-ripple fit></paper-ripple>
+              <paper-icon-button icon="send" on-click="{{openThread}}"></paper-icon-button>
+              <paper-icon-button icon="delete" on-click="{{deleteContact}}"></paper-icon-button>
+            </core-item>
+          </template>
+        </core-list>
+      </paper-shadow>
+    </section>
+  </template>
+
+  <script>
+    Polymer('contacts-view', {
+
+      ready: function() {
+      },
+
+      openThread: function(event) {
+        var contact = event.target.templateInstance.model.model;
+        this.$.messageOverlay.thread = this.data.threads.filter(
+            function(t) {return t.from == contact.name})[0];
+        if (this.$.messageOverlay.thread === undefined) {
+          var thread = {from: contact.name, messages: []};
+          this.data.threads.push(thread);
+          this.$.messageOverlay.thread = thread;
+        }
+        this.$.messageOverlay.open();
+      },
+
+      deleteContact: function(event) {
+        var toDelete = event.target.templateInstance.model.model;
+        this.data.contacts = this.data.contacts.filter(function(c) {return c.name != toDelete.name});
+      }
+    });
+  </script>
+</polymer-element>

@@ -1,4 +1,4 @@
-.message-list {
+.contact-list {
   background-color: whitesmoke;
   transition: width ease-in-out;
 }
@@ -13,7 +13,7 @@
   }
 }
 
-.message-list core-item {
+.contact-list core-item {
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);;
   padding: 15px;
 }
@@ -32,12 +32,6 @@
   background-color: red;
 }
 
-.sender-name {
+.contact-name {
   font-weight: bold;
-}
-
-.message-preview {
-  color: rgba(0, 0, 0, 0.54);
-  overflow: hidden;
-  text-overflow: ellipsis;
 }

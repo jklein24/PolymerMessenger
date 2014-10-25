@@ -1,0 +1,97 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="bower_components/paper-dialog/paper-dialog-transition.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">
+<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="bower_components/paper-input/paper-input.html">
+<link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="message-thread.html">
+
+<!--
+##### Example
+
+    <messages-view></messages-view>
+
+@element messages-view
+@blurb Element providing solution to [...].
+@status [...]
+-->
+
+<polymer-element name="new-message-overlay" attributes="threads">
+  <template>
+    <!--<link rel="stylesheet" href="messages-view.css">-->
+    <style>
+      paper-button {
+        color: #4285f4;
+      }
+
+      paper-icon-button {
+        align-self: center;
+      }
+
+      #destinationInput {
+        width: 100%;
+      }
+    </style>
+    <paper-dialog id="overlay" heading="Send new message" backdrop
+        transition="paper-dialog-transition-bottom" on-core-overlay-close-completed="{{reset}}">
+      <paper-input flex required id="destinationInput" flex label="Recipient"></paper-input>
+      <message-thread id="messageThread"></message-thread>
+      <div layout horizontal>
+        <paper-input required id="messageInput" flex label="Message"></paper-input>
+        <paper-icon-button icon="send" on-click="{{sendMessage}}"></paper-icon-button>
+      </div>
+      <paper-button affirmative core-overlay-toggle>CLOSE</paper-button>
+    </paper-dialog>
+  </template>
+
+  <script>
+    Polymer('new-message-overlay', {
+
+      ready: function() {
+      },
+
+      open: function() {
+        this.$.overlay.toggle();
+      },
+
+      sendMessage: function() {
+        if (this.$.messageInput.invalid || this.$.destinationInput.invalid) {
+          return
+        }
+
+        var newThread = {from: this.$.destinationInput.value, messages: []};
+        var destThreads = this.threads.filter(function(t) {
+          return t.from == this.$.destinationInput.value;
+        }.bind(this));
+
+
+        if (destThreads.length > 0) {
+          newThread = destThreads[0];
+        }
+
+        var newMessage = {from: 'Me', message: this.$.messageInput.value}
+        newThread.messages.push(newMessage);
+
+        if (destThreads.length == 0) {
+          this.threads.unshift(newThread);
+        }
+
+        this.$.messageThread.thread = newThread;
+        this.$.destinationInput.hidden = true;
+        this.$.overlay.heading = 'Message from ' + newThread.from;
+        this.async(function() {
+          this.$.overlay.querySelector('::shadow core-overlay').repositionTarget();
+        });
+      },
+
+      reset: function() {
+        this.$.messageThread.thread = undefined;
+        this.$.destinationInput.value = '';
+        this.$.messageInput.value = '';
+        this.$.destinationInput.removeAttribute('hidden');
+        this.$.overlay.heading = 'Send new message';
+      }
+    });
+  </script>
+</polymer-element>

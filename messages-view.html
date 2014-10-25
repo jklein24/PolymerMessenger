@@ -3,6 +3,7 @@
 <link rel="import" href="bower_components/core-list/core-list.html">
 <link rel="import" href="bower_components/core-item/core-item.html">
 <link rel="import" href="bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
 <link rel="import" href="message-overlay.html">
 
@@ -22,20 +23,21 @@
 
     <message-overlay id="messageOverlay"></message-overlay>
     <section layout vertical center-center>
-      <core-list data="{{data.threads}}" class="message-list" on-core-activate="{{messageTapped}}">
-        <template>
-          <core-item layout horizontal>
-            <div class="avatar">{{model.from[0]}}</div>
-            <div layout vertical flex>
-              <div class="sender-name">{{model.from}}</div>
-              <div class="message-preview">{{model.messages[model.messages.length - 1].message}}</div>
-            </div>
-            <paper-ripple fit></paper-ripple>
-
-          </core-item>
-        </template>
-        <paper-shadow z="1"></paper-shadow>
-      </core-list>
+      <paper-shadow id="listContainer" z="1">
+        <core-list data="{{data.threads}}" class="message-list" height="81" slide-from-right on-core-activate="{{messageTapped}}">
+          <template>
+            <core-item layout horizontal>
+              <div class="avatar">{{model.from[0]}}</div>
+              <div layout vertical flex>
+                <div class="sender-name">{{model.from}}</div>
+                <div class="message-preview">{{model.messages[model.messages.length - 1].message}}</div>
+              </div>
+              <paper-ripple fit></paper-ripple>
+              <paper-icon-button icon="delete" on-click="{{deleteThread}}"></paper-icon-button>
+            </core-item>
+          </template>
+        </core-list>
+      </paper-shadow>
     </section>
   </template>
 
@@ -46,9 +48,18 @@
       },
 
       messageTapped: function(event) {
+        if (event.detail.data === undefined) {
+          return;
+        }
+
         this.$.messageOverlay.thread = event.detail.data;
         this.$.messageOverlay.open();
       },
+
+      deleteThread: function(event) {
+        var from = event.target.templateInstance.model.model.from;
+        this.data.threads = this.data.threads.filter(function(t) {return t.from != from});
+      }
 
     });
   </script>
